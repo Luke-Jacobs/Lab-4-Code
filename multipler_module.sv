@@ -16,7 +16,8 @@ assign M = B[0];
 
 // Shifter register wiring
 logic [16:0] full_register = {X, A, B};
-shift_register(.clk(clk), .data_in(full_register), .shift_in(X), .data_out(full_register));
+shift_register(.clk(clk), .data_in(full_register), .shift_in(X), .shift_toggle(shift_signal),
+					.data_out(full_register));
 
 // FSM
 logic shift_signal, add_signal, subtract_signal;
@@ -30,7 +31,10 @@ adder_9_bit(.x(A), .y(s_adder_input), .c_in(subtract_signal), .s({X, A}));
 always_comb begin
 
 	// Addition vs. Subtraction switching
-	adder_carry = ;
+	if (subtract_signal)
+		s_adder_input = !S;
+	else
+		s_adder_input = S;
 
 end
 
