@@ -3,7 +3,6 @@ module multiplier_fsm(
 	input logic reset,
 	input logic clk,
 	input logic run,
-	input logic clearA_loadB,
 	
 	input logic M_signal,
 	
@@ -136,9 +135,9 @@ always_comb
 end
 
 // FF Updating - update our new state
-always_ff @ (posedge Clk or posedge Reset )
+always_ff @ (posedge Clk)
 	
-	if (Reset)
+	if (reset)
 		state <= HoldState;
 	else
 		state <= next_state;

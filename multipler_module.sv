@@ -4,7 +4,10 @@ module multiplier(
 	input logic [7:0] S,
 	input logic [7:0] B,
 	input logic [7:0] A,
-	input logic X
+	input logic X,
+	
+	input logic clear_A_load_B,
+	input logic run
 );
 
 // M determines when the adder 
@@ -15,11 +18,21 @@ assign M = B[0];
 logic [16:0] full_register = {X, A, B};
 shift_register(.clk(clk), .data_in(full_register), .shift_in(X), .data_out(full_register));
 
-// 9 bit adder wiring for addition
-adder_9_bit(.x(), .y(), .c_in(0), .s());
+// FSM
+logic shift_signal, add_signal, subtract_signal;
+multiplier_fsm fsm(.reset(clear_A_load_B), .clk(clk), .run(run), .M_signal(M), 
+						 .shift(shift_signal), .add(add_signal), .sub(subtract_signal));
 
-// 9 bit adder wiring for subtraction
-adder_9_bit(.x(), .y(), .c);
+// 9 bit adder wiring for addition
+logic s_adder_input;
+adder_9_bit(.x(A), .y(s_adder_input), .c_in(subtract_signal), .s({X, A}));
+
+always_comb begin
+
+	// Addition vs. Subtraction switching
+	adder_carry = ;
+
+end
 
 endmodule
 
