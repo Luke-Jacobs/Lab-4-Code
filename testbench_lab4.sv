@@ -10,9 +10,9 @@ logic [7:0] S;
 logic [15:0] product;
 logic clk, clear_A_load_B, run;
 
-multipler test_target(.run(run), .clear_A_load_B(clear_A_load_B), .clk(clk), .S(S), .product(product));
+multiplier test_target(.run(run), .clear_A_load_B(clear_A_load_B), .clk(clk), .S(S), .product(product));
 
-always_comb begin : CLOCK
+always begin : CLOCK
 	#1 clk = ~clk;
 end
 
