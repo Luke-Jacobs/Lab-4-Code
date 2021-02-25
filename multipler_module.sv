@@ -2,10 +2,6 @@
 module multiplier(
 	input logic clk,
 	input logic [7:0] S,
-	input logic [7:0] B,
-	input logic [7:0] A,
-	input logic X,
-	
 	input logic clear_A_load_B,
 	input logic run
 );
@@ -15,20 +11,42 @@ logic M;
 assign M = B[0];
 
 // Shifter register wiring
-logic [16:0] full_register = {X, A, B};
-shift_register(.clk(clk), .data_in(full_register), .shift_in(X), .shift_toggle(shift_signal),
-					.data_out(full_register));
+
+logic [7:0] B, B_in_shift, B_in_adder;
+logic [7:0] A_in, A_shift, A_in_adder;
+logic X, X_in_shift, X_in_adder;
+logic shift_signal, add_signal, subtract_signal;
+
+shift_register shift_register0(.clk(clk), .data_in({X,A,B}), .b_data_in(S), .shift_in(X), .shift_toggle(shift_signal),
+					.data_out({X_in_shift, A_in_shift, B_in_shift}));
 
 // FSM
-logic shift_signal, add_signal, subtract_signal;
+
+
 multiplier_fsm fsm(.reset(clear_A_load_B), .clk(clk), .run(run), .M_signal(M), 
 						 .shift(shift_signal), .add(add_signal), .sub(subtract_signal));
 
 // 9 bit adder wiring for addition
+
+
+
 logic s_adder_input;
-adder_9_bit(.x(A), .y(s_adder_input), .c_in(subtract_signal), .s({X, A}));
+adder_9_bit adder_0(.x(A), .y(s_adder_input), .c_in(subtract_signal), .s({X_in_adder, A_in_adder}));
 
 always_comb begin
+
+	if (shift_signal)
+		begin
+		 X = X_in_shift;
+		 A = A_in_shift;
+		 B = B_in_shift;
+		end
+	else
+		begin
+		 X = X_in_adder;
+		 A = A_in_adder; 
+		 B = B_in_adder;
+		end
 
 	// Addition vs. Subtraction switching
 	if (subtract_signal)

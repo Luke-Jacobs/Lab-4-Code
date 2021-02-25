@@ -17,7 +17,7 @@ enum logic [4:0] {SS1, SS2, SS3, SS4, SS5,
 						SubtractState, HoldState} state, next_state;
 
 // Transition to the next state
-always_comb
+always_comb begin
 
 	// Default case: do nothing and stay in same state
 	next_state = state;
@@ -42,39 +42,39 @@ always_comb
 			next_state = SS8;
 			
 		SS1:
-			if (M_signal):
+			if (M_signal)
 				next_state = AS2;
-			else:
+			else
 				next_state = SS2;
 		SS2:
-			if (M_signal):
+			if (M_signal)
 				next_state = AS3;
-			else:
+			else
 				next_state = SS3;
 		SS3:
-			if (M_signal):
+			if (M_signal)
 				next_state = AS4;
-			else:
+			else
 				next_state = SS4;
 		SS4:
-			if (M_signal):
+			if (M_signal)
 				next_state = AS5;
-			else:
+			else
 				next_state = SS5;
 		SS5:
-			if (M_signal):
+			if (M_signal)
 				next_state = AS6;
-			else:
+			else
 				next_state = SS6;
 		SS6:
-			if (M_signal):
+			if (M_signal)
 				next_state = AS7;
-			else:
+			else
 				next_state = SS7;
 		SS7:
-			if (M_signal):
+			if (M_signal)
 				next_state = SubtractState;
-			else:
+			else
 				next_state = SS8;
 		SS8:
 			next_state = HoldState;
@@ -86,6 +86,7 @@ always_comb
 				next_state = SS1;
 
 	endcase
+	
 	
 	// Assign outputs by state
 	shift = 0;
@@ -135,7 +136,8 @@ always_comb
 end
 
 // FF Updating - update our new state
-always_ff @ (posedge Clk)
+always_ff @ (posedge clk)
+begin
 	
 	if (reset)
 		state <= HoldState;
