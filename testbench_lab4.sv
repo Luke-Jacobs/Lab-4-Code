@@ -16,8 +16,6 @@ multiplier test_target(.Run_Accumulate(run), .Reset_Clear(clear_A_load_B), .Clk(
 //datapath test_target(.clk(clk),.shift_sig(shift),.add_sig(add),.sub_sig(sub), 
 	//.clear_A_load_B_sig(clear_A_load_B), .S(S), .X(X), .A(A), .B(B));
  
- 
- 
 //adder_9_bit test_target(.x({X,A}), .y(S), .
 
  
@@ -26,7 +24,7 @@ always begin : CLOCK
 end
 
 
-integer errorCount = 0;
+integer errorCount = 0, Const1 = 7, Const2 = -59;
 
 initial begin
 
@@ -35,27 +33,39 @@ initial begin
 	run = 1;
 	clear_A_load_B = 1;
 	
-
+	// ===== COMPUTATION 1: 7 * -59 ===== 
+	
 	// Load B from S
 	#4
-	S = 8'hc5;
+	S = Const1;
 	clear_A_load_B = 0;
-	
 	
 	// Run computation
 	#4
 	clear_A_load_B = 1;
-	S = 8'h07;
+	S = Const2;
 	run = 0;
 	
-	//#1 run = 1;
+	// Release run button
+	#4
+	run = 1;
 	
+	// ===== COMPUTATION 2: -7 * -59 ===== 
 	
-	//#50
-	//run = 1;
+	// Load B from S
+	#30
+	S = -Const1;
+	clear_A_load_B = 0;
 	
-	//#1 run = 0;
-	
+	// Run computation
+	#4
+	clear_A_load_B = 1;
+	S = Const2;
+	run = 0;
+
+	// Release run button
+	#4
+	run = 1;
 	
 end
 
