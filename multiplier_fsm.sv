@@ -8,15 +8,15 @@ module multiplier_fsm(
 	
 	output logic shift,
 	output logic add,
-	output logic sub
-	
+	output logic sub,
+	//output logic XA_clr
 	
 );
 
-enum logic [18:0] {SS1, SS2, SS3, SS4, SS5, 
+enum logic [19:0] {SS1, SS2, SS3, SS4, SS5, 
 						SS6, SS7, SS8, AS1, AS2, 
 						AS3, AS4, AS5, AS6, AS7, 
-						SubtractState, HoldState} state, next_state;
+						SubtractState, HoldState_int, HoldState} state, next_state;
 logic run_temp;
 
 // Transition to the next state
@@ -80,10 +80,15 @@ always_comb begin
 			else
 				next_state = SS8;
 		SS8:
-			next_state = HoldState;
+			next_state = HoldState_int;
+			
+		HoldState_int:
+			if(!run)
+				next_state = HoldState;
 			
 		HoldState:
 			if (run & M_signal[0])
+				
 				next_state = AS1;
 			else if (run & (!M_signal[0]))
 				next_state = SS1;

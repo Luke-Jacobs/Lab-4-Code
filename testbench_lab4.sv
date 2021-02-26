@@ -32,7 +32,7 @@ initial begin
 
 	// Init
 	clk = 0;
-	run = 0;
+	run = 1;
 	clear_A_load_B = 1;
 	
 
@@ -46,9 +46,9 @@ initial begin
 	#4
 	clear_A_load_B = 1;
 	S = 8'h07;
-	run = 1;
+	run = 0;
 	
-	//#1 run = 0;
+	//#1 run = 1;
 	
 	
 	//#50
