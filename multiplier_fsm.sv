@@ -4,7 +4,7 @@ module multiplier_fsm(
 	input logic clk,
 	input logic run,
 	
-	input logic M_signal,
+	input logic [1:0] M_signal,
 	
 	output logic shift,
 	output logic add,
@@ -44,37 +44,37 @@ always_comb begin
 			next_state = SS8;
 			
 		SS1:
-			if (M_signal)
+			if (M_signal[1])
 				next_state = AS2;
 			else
 				next_state = SS2;
 		SS2:
-			if (M_signal)
+			if (M_signal[1])
 				next_state = AS3;
 			else
 				next_state = SS3;
 		SS3:
-			if (M_signal)
+			if (M_signal[1])
 				next_state = AS4;
 			else
 				next_state = SS4;
 		SS4:
-			if (M_signal)
+			if (M_signal[1])
 				next_state = AS5;
 			else
 				next_state = SS5;
 		SS5:
-			if (M_signal)
+			if (M_signal[1])
 				next_state = AS6;
 			else
 				next_state = SS6;
 		SS6:
-			if (M_signal)
+			if (M_signal[1])
 				next_state = AS7;
 			else
 				next_state = SS7;
 		SS7:
-			if (M_signal)
+			if (M_signal[1])
 				next_state = SubtractState;
 			else
 				next_state = SS8;
@@ -82,9 +82,9 @@ always_comb begin
 			next_state = HoldState;
 			
 		HoldState:
-			if (run & M_signal)
+			if (run & M_signal[0])
 				next_state = AS1;
-			else if (run & (!M_signal))
+			else if (run & (!M_signal[0]))
 				next_state = SS1;
 
 	endcase

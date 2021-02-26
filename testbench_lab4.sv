@@ -38,22 +38,23 @@ initial begin
 
 	// Load B from S
 	#4
-	S = 8'hC5;
+	S = 8'hFF;
 	clear_A_load_B = 1;
 	
 	
 	// Run computation
 	#4
 	clear_A_load_B = 0;
-	S = 8'h07;
+	S = 8'hFF;
 	run = 1;
 	
 	#1 run = 0;
 	
 	
-	#26
-	if (product != -413)
-		errorCount++;
+	#50
+	run = 1;
+	
+	#1 run = 0;
 	
 	
 end
