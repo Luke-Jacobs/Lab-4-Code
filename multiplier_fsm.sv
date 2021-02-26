@@ -17,10 +17,11 @@ enum logic [18:0] {SS1, SS2, SS3, SS4, SS5,
 						SS6, SS7, SS8, AS1, AS2, 
 						AS3, AS4, AS5, AS6, AS7, 
 						SubtractState, HoldState} state, next_state;
+logic run_temp;
 
 // Transition to the next state
 always_comb begin
-
+	
 	// Default case: do nothing and stay in same state
 	next_state = state;
 	unique case (state)
@@ -146,6 +147,5 @@ begin
 	else
 		state <= next_state;
 end
-
 
 endmodule

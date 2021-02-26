@@ -5,7 +5,7 @@ module datapath(
 	input logic add_sig,
 	input logic sub_sig,
 	input logic clear_A_load_B_sig,
-	input logic XA_clr,
+	//input logic XA_clr,
 	// Switch input
 	input logic [7:0] S,
 	// Output registers
@@ -24,7 +24,7 @@ module datapath(
 	
 	// Shift register wiring
 	shift_register shift_register0(.clk(clk), .shift_in(X), .shift_toggle(shift_sig), .data_new(XAB_new), .load(load),
-												.data_out({X, A, B}), .XA_clr(XA_clr));
+												.data_out({X, A, B}));//, .XA_clr(XA_clr));
 
 	// 9 bit adder wiring for addition
 	logic [8:0] s_adder_input;
@@ -65,7 +65,7 @@ endmodule
 
 module shift_register(
 	input logic clk,
-	input logic XA_clr,
+	//input logic XA_clr,
 	input logic load, // Load XAB signal
 	input logic [16:0] data_new, // Parallel load D
 	input logic shift_in,  // This will always be X
@@ -79,8 +79,8 @@ module shift_register(
 			if (load)
 				data_out <= data_new;
 			//clear XA register
-			else if(XA_clr)
-				data_out <= {9'b00000000, data_out[7:0]};
+			//else if(XA_clr)
+				//data_out <= {9'b00000000, data_out[7:0]};
 			// Shift implementation
 			else if (shift_toggle)
 				data_out <= {shift_in, shift_in, data_out[15:1]};

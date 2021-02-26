@@ -10,7 +10,7 @@ logic [7:0] S;
 logic [15:0] product;
 logic clk, clear_A_load_B, run;
 
-multiplier test_target(.run(run), .clear_A_load_B(clear_A_load_B), .clk(clk), .S(S), .product(product));
+multiplier test_target(.Run_Accumulate(run), .Reset_Clear(clear_A_load_B), .Clk(clk), .SW(S), .product(product));
 
 
 //datapath test_target(.clk(clk),.shift_sig(shift),.add_sig(add),.sub_sig(sub), 
@@ -33,28 +33,28 @@ initial begin
 	// Init
 	clk = 0;
 	run = 0;
-	clear_A_load_B = 0;
+	clear_A_load_B = 1;
 	
 
 	// Load B from S
 	#4
-	S = 8'hFF;
-	clear_A_load_B = 1;
+	S = 8'hc5;
+	clear_A_load_B = 0;
 	
 	
 	// Run computation
 	#4
-	clear_A_load_B = 0;
-	S = 8'hFF;
+	clear_A_load_B = 1;
+	S = 8'h07;
 	run = 1;
 	
-	#1 run = 0;
+	//#1 run = 0;
 	
 	
-	#50
-	run = 1;
+	//#50
+	//run = 1;
 	
-	#1 run = 0;
+	//#1 run = 0;
 	
 	
 end
