@@ -27,28 +27,31 @@ module datapath(
 
 	// 9 bit adder wiring for addition
 	logic s_adder_input;
+	
 	adder_9_bit adder_0(.x(A), .y(s_adder_input), .c_in(subtract_signal), .s(adder_result));
 
 	always_comb
+	begin
 		s_adder_input = S;
-		
+		XAB_new =  17'hxxxxx;
+		load = 0;
 		// Implement reset_load_clear here
 		if (clear_A_load_B_sig) begin
 			load = 1;
-			XAB_new = {1b'0 + 8b'00000000 + S}; // On the next clock, this will be input into the register (B will receive S)
-		
+			XAB_new = {9'b00000000, S}; // On the next clock, this will be input into the register (B will receive S)
+		end
 		// Shift
-		end else if (shift_sig) begin
-			load = 0;
-			XAB_new = 17'bX; // We don't care what XAB is when the shift signal is high because it won't get placed in the FF
-
+//		else if (shift_sig) begin
+//			load = 0;
+//			XAB_new = 17'hxxxxx; // We don't care what XAB is when the shift signal is high because it won't get placed in the FF
+//		end 
 		// Addition
-		end else if (add_sig) begin
+		else if (add_sig) begin
 			load = 1;
 			XAB_new = {adder_result, B}; // The new XAB will be the result of the addition concat with B
-		
+		end
 		// Subtraction
-		end else if (sub_sig) begin
+		else if (sub_sig) begin
 			load = 1;
 			s_adder_input = ~S; // NOT S so that with the carry in S can be negated
 			XAB_new = {adder_result, B}; // The new XAB will be the result of the subtraction concat with B
@@ -79,7 +82,7 @@ module shift_register(
 				data_out <= {data_out[16], shift_in, data_out[15:1]};
 			end
 			
-			// Do nothing if shift_toggle and load are both low
+			
 	end	
 
 endmodule
