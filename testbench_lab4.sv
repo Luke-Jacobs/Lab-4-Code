@@ -12,9 +12,19 @@ logic clk, clear_A_load_B, run;
 
 multiplier test_target(.run(run), .clear_A_load_B(clear_A_load_B), .clk(clk), .S(S), .product(product));
 
+
+//datapath test_target(.clk(clk),.shift_sig(shift),.add_sig(add),.sub_sig(sub), 
+	//.clear_A_load_B_sig(clear_A_load_B), .S(S), .X(X), .A(A), .B(B));
+ 
+ 
+ 
+//adder_9_bit test_target(.x({X,A}), .y(S), .
+
+ 
 always begin : CLOCK
 	#1 clk = ~clk;
 end
+
 
 integer errorCount = 0;
 
@@ -24,18 +34,22 @@ initial begin
 	clk = 0;
 	run = 0;
 	clear_A_load_B = 0;
-	S = 0;
+	
 
 	// Load B from S
 	#4
+	S = 8'hC5;
 	clear_A_load_B = 1;
-	S = 8'hc5;
+	
 	
 	// Run computation
 	#4
 	clear_A_load_B = 0;
 	S = 8'h07;
 	run = 1;
+	
+	#1 run = 0;
+	
 	
 	#26
 	if (product != -413)

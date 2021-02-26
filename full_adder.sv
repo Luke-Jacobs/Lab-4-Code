@@ -5,9 +5,7 @@ module full_adder (
 	input logic y, 
 	input logic c_in, 
 	output logic c_out, 
-	output logic s,
-	output logic p,
-	output logic g
+	output logic s
 );
 
 	always_comb begin
@@ -15,9 +13,6 @@ module full_adder (
 		s = c_in^(x^y);
 		c_out = (x&y)|(x&c_in)|(y&c_in);
 		
-		p = x^y;
-		g = x&y;
-
 	end
 	
 endmodule

@@ -26,13 +26,13 @@ module datapath(
 												.data_out({X, A, B}));
 
 	// 9 bit adder wiring for addition
-	logic s_adder_input;
+	logic [8:0] s_adder_input;
 	
-	adder_9_bit adder_0(.x(A), .y(s_adder_input), .c_in(subtract_signal), .s(adder_result));
+	adder_9_bit adder_0(.x({X,A}), .y(s_adder_input), .c_in(sub_sig), .s(adder_result));
 
 	always_comb
 	begin
-		s_adder_input = S;
+		s_adder_input = {1'b0,S}; //default values 
 		XAB_new =  17'hxxxxx;
 		load = 0;
 		// Implement reset_load_clear here
@@ -48,13 +48,13 @@ module datapath(
 		// Addition
 		else if (add_sig) begin
 			load = 1;
-			XAB_new = {adder_result, B}; // The new XAB will be the result of the addition concat with B
+			XAB_new = {adder_result[7],adder_result[7:0], B}; // The new XAB will be the result of the addition concat with B
 		end
 		// Subtraction
 		else if (sub_sig) begin
 			load = 1;
 			s_adder_input = ~S; // NOT S so that with the carry in S can be negated
-			XAB_new = {adder_result, B}; // The new XAB will be the result of the subtraction concat with B
+			XAB_new = {adder_result[7], adder_result[7:0], B}; // The new XAB will be the result of the subtraction concat with B
 		end
 	
 	end
@@ -79,7 +79,7 @@ module shift_register(
 			
 			// Shift implementation
 			else if (shift_toggle) begin
-				data_out <= {data_out[16], shift_in, data_out[15:1]};
+				data_out <= {shift_in, shift_in, data_out[15:1]};
 			end
 			
 			

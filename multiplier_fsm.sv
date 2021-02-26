@@ -9,9 +9,11 @@ module multiplier_fsm(
 	output logic shift,
 	output logic add,
 	output logic sub
+	
+	
 );
 
-enum logic [4:0] {SS1, SS2, SS3, SS4, SS5, 
+enum logic [18:0] {SS1, SS2, SS3, SS4, SS5, 
 						SS6, SS7, SS8, AS1, AS2, 
 						AS3, AS4, AS5, AS6, AS7, 
 						SubtractState, HoldState} state, next_state;
@@ -143,7 +145,6 @@ begin
 		state <= HoldState;
 	else
 		state <= next_state;
-
 end
 
 
